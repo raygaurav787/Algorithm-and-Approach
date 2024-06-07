@@ -1,0 +1,14 @@
+The Difference Array Algorithm is an efficient technique to manage range update queries. It is particularly useful when we need to frequently update ranges in an array and query the cumulative effect of these updates. The main idea is to transform the update operations into point updates on a difference array, which can then be used to reconstruct the original array.
+
+Approach
+1. Difference Array Creation:
+   - Create an auxiliary array v of size max(r) + 2 initialized to 0. This array will help us in efficiently counting the frequencies of integers in the given ranges.
+   - For each range [l[i], r[i]], increment v[l[i]] by 1 and decrement v[r[i] + 1] by 1. This step effectively marks the beginning and the end of a range.
+
+2. Prefix Sum Calculation:
+   - Convert the difference array into a prefix sum array. This step helps in reconstructing the frequency of each integer in the original ranges.
+   - Iterate through the array v, updating each position v[i] to be the sum of itself and the previous value v[i-1].
+
+3. Finding the Maximum Occurred Integer:
+   - Traverse the prefix sum array to find the maximum value, which corresponds to the highest frequency.
+   - Track the smallest integer with this maximum frequency.
