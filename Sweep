@@ -1,0 +1,20 @@
+Line Sweep (or Sweep Line) is an algorithmic technique where we sweep an imaginary line (x or y axis) and solve various problem.
+There would be an event (entry or event) and based on that we update the information and then return result.
+
+This is going to be a long post, so I have divided into 3 parts.
+
+1D Easy/Medium problem.
+1D Hard.
+2D geometric problems.
+There could be errors, please post in comments.
+Also suggest more problem to be added to this list.
+Inviting @votrubac @lee215 to give suggestion for improvment.
+
+for further reference we use -https://leetcode.com/problems/determine-if-two-events-have-conflict/discuss/2734145/Line-Sweep-Learn-This-For-All-TimeDay-Problems!
+
+
+
+
+
+
+
