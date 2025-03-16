@@ -1,0 +1,52 @@
+class NumArray {
+public:
+
+vector<int> pre;
+vector<int> nums1;
+int s=0;
+int n;
+        
+NumArray(vector<int>& nums) {
+  n=nums.size();
+ for(int i=0;i<n;i++){
+ s+=nums[i];
+ pre.push_back(s);
+ nums1.push_back(nums[i]);
+ }
+ 
+    }
+    
+    void update(int index, int val) {
+// int n=nums.size();
+ pre[index]-=nums1[index];
+ nums1[index]=val;
+ pre[index]+=val;
+ for(int i=index+1;i<n;i++){
+ pre[i]=pre[i-1]+nums1[i];
+ }
+    }
+    
+    int sumRange(int left, int right) {
+if(left==0) return pre[right];
+else return pre[right]-pre[left-1];
+       
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
+
+
+*Approach*- The approach woould be we would make
+a duplicate array for the nums 
+and we will make a prefix summ array
+When their is a change in any value 
+we will update it in nums 
+
+Decrease that value from the prefix sum[idx]
+and then we will change the sums form
+idx+1 to n as that will incur changes
