@@ -1,0 +1,106 @@
+class Solution {
+public:
+    int longestWPI(vector<int>& hours) {
+        vector<int> transformed(hours.size());
+        for (int i = 0; i < hours.size(); i++)
+            transformed[i] = (hours[i] > 8) ? 1 : -1;
+        
+        int prefix_sum = 0;
+        int longest_interval = 0;
+        unordered_map<int, int> prefix_sum_map;
+
+        for (int i = 0; i < transformed.size(); i++) {
+            // Update the running prefix sum
+            prefix_sum += transformed[i];
+
+            // If the prefix sum is positive, we have a well-performing interval from the start to i
+            if (prefix_sum > 0)
+                longest_interval = i + 1;
+            else
+                // Check if there is an earlier prefix sum that would give a well-performing interval
+                if (prefix_sum_map.find(prefix_sum - 1) != prefix_sum_map.end())
+                    longest_interval = max(longest_interval, i - prefix_sum_map[prefix_sum - 1]);
+
+            // Record the first occurrence of each prefix sum
+            if (prefix_sum_map.find(prefix_sum) == prefix_sum_map.end())
+                prefix_sum_map[prefix_sum] = i;
+        }
+
+        return longest_interval;
+    }
+};
+Let me break it down step by step in a simpler way.
+
+Understanding the Problem
+
+You are given an array hours where:
+
+A tiring day is when hours[i] > 8
+
+A non-tiring day is when hours[i] ≤ 8
+
+
+Your task is to find the longest continuous subarray where tiring days outnumber non-tiring days.
+
+
+---
+
+Step 1: Convert Hours into 1s and -1s
+
+Since we care about whether tiring days are more than non-tiring days, we transform the hours array into a new array:
+
+1 if hours[i] > 8 (tiring day)
+
+-1 if hours[i] ≤ 8 (non-tiring day)
+
+
+Example
+
+hours = [9, 9, 6, 0, 6, 6, 9]
+
+Convert it into:
+
+transformed = [1, 1, -1, -1, -1, -1, 1]
+
+Now, we need to find the longest subarray where the sum is positive.
+
+
+---
+
+Step 2: Use Prefix Sum
+
+We calculate the prefix sum, which keeps track of how many more 1s we have compared to -1s.
+
+For the example above:
+
+Index:        0   1   2   3   4   5   6
+Transformed:  1   1  -1  -1  -1  -1   1
+Prefix Sum:   1   2   1   0  -1  -2  -1
+
+If the prefix sum is positive, it means the entire subarray from 0 to i is a valid answer.
+
+If the prefix sum is negative or zero, we check if an earlier index had prefix_sum - 1.
+
+This tells us there exists a subarray between those indices where tiring days > non-tiring days.
+
+
+
+
+---
+
+Step 3: Using a Hash Map to Store First Occurrences
+
+We use a hash map (prefix_sum_map) to store the first occurrence of each prefix sum.
+
+1. If prefix_sum > 0, we update longest_interval = i + 1 because the whole subarray is valid.
+
+
+2. Otherwise, check if prefix_sum - 1 exists in prefix_sum_map.
+
+If yes, calculate the subarray length and update longest_interval.
+
+
+
+3. Store prefix_sum in the map only if it hasn’t been seen before (to get the longest subarray).
+
+
