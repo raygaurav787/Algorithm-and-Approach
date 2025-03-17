@@ -1,0 +1,67 @@
+Top to bottom approach 
+
+The recursive solution involves changing two parameters: the current index in the array (n) and the current target sum (sum). 
+We need to track both parameters, so we create a 2D array of size (n+1) x (sum+1) because 
+the value of n will be in the range [0, n] and sum will be in the range [0, sum].
+We initialize the 2D array with -1 to indicate that no subproblems have been computed yet.
+We check if the value at memo[n][sum] is -1. If it is, we proceed to compute the result
+. otherwise, we return the stored result.
+
+class Solution {
+public:
+bool solve(vector<int> arr, int n , int sum, vector<vector<int>> &dp)
+{
+if(sum==0) return true;
+if(n==0) return false;
+if(dp[n-1][sum]!=-1) return dp[n-1][sum];
+
+if(arr[n-1]<=sum){
+return dp[n-1][sum]=solve(arr,n-1,sum,dp) || solve(arr,n-1,sum-arr[n-1],dp);
+}
+else if(arr[n-1]>sum) return dp[n-1][sum]=solve(arr,n-1,sum,dp);
+}
+
+
+    bool isSubsetSum(vector<int>& arr, int sum) {
+int n=arr.size();
+ vector<vector<int>> dp (n+1,vector<int>(sum+1,-1));
+ return solve(arr,n,sum,dp);
+        
+    }
+};
+
+// bottom to top approach  
+
+class Solution {
+  public:
+    bool isSubsetSum(vector<int>& arr, int sum) {
+int n=arr.size();
+bool t[n+1][sum+1];
+       for(int i=0;i<=n;i++)
+       for(int j=0;j<=sum;j++)
+       {
+           if(i==0)t[i][j]= false;
+           if(j==0)t[i][j]=true;
+       }
+       for(int i=1;i<=n;i++)
+       for(int j=1;j<=sum;j++)
+       {if(arr[i-1]<=j)
+           t[i][j]=t[i-1][j]||t[i-1][j-arr[i-1]];
+       else
+           t[i][j]=t[i-1][j];
+       }
+       return t[n][sum];        
+    }
+};
+So we will create a 2D array of size (n + 1) * (sum + 1) 
+of type boolean. The state dp[i][j] will be true if 
+there exists a subset of elements from arr[0 . . . i] with sum = ‘j’. 
+
+
+The dynamic programming relation is as follows: 
+
+
+if (arr[i-1] > j)
+    dp[i][j] = dp[i-1][j]
+else 
+    dp[i][j] = dp[i-1][j] OR dp[i-1][j-arr[i-1]]
